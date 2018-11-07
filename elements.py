@@ -1,4 +1,5 @@
-import csv
+import csv, gtts
+from playsound import playsound
 
 class Element:
 	def __init__(self,*argv):
@@ -73,7 +74,6 @@ class PeriodicTable:
 					if element.symbol == symbol:
 						totalweight += float(element.weight)*multiplier
 		return totalweight
-        
 	def __str__(self):
 		return str(self.element)
 	__repr__ = __str__ 

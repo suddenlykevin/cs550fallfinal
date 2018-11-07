@@ -1,5 +1,6 @@
-import csv, gtts
-from playsound import playsound
+import csv
+from gtts import gTTS
+import os
 
 class Element:
 	def __init__(self,*argv):
@@ -23,6 +24,11 @@ class Element:
 					self.fusion = arg
 				n+=1
 	def identify(self):
+		text = "name: "+self.name+"\nnumber: "+self.number+"\nsymbol: "+self.symbol+"\nweight: "+self.weight
+		language = 'en'
+		myobj = gTTS(text=text, lang=language, slow=False) 
+		myobj.save("sound.mp3") 
+		os.system("afplay sound.mp3")
 		return "name: "+self.name+"\nnumber: "+self.number+"\nsymbol: "+self.symbol+"\nweight: "+self.weight
 	def __str__(self):
 		return str(self.symbol)
@@ -79,4 +85,4 @@ class PeriodicTable:
 	__repr__ = __str__ 
 
 initPeriodicTable=PeriodicTable()
-print(initPeriodicTable.parse(input("Please input molecular formula\n>>> ")))
+print(initPeriodicTable.index(input("Please input\n>>> ")))

@@ -1,6 +1,7 @@
 import csv
 from gtts import gTTS
 import os
+import time
 
 class Element:
 	def __init__(self,*argv):
@@ -24,12 +25,26 @@ class Element:
 					self.fusion = arg
 				n+=1
 	def identify(self):
-		text = "name: "+self.name+"\nnumber: "+self.number+"\nsymbol: "+self.symbol+"\nweight: "+self.weight
+		name = "name: "+self.name
+		number = (" Atomic number: "+self.number)
+		symbol= ("symbol: "+self.symbol)
+		weight = ("\n weight: "+self.weight+"grams per mol")
 		language = 'en'
-		myobj = gTTS(text=text, lang=language, slow=False) 
-		myobj.save("sound.mp3") 
-		os.system("afplay sound.mp3")
-		return "name: "+self.name+"\nnumber: "+self.number+"\nsymbol: "+self.symbol+"\nweight: "+self.weight
+		myobj = gTTS(text=name, lang=language, slow=False) 
+		myobj.save("name.mp3") 
+		os.system("afplay name.mp3")
+		myobj = gTTS(text=number, lang=language, slow=False)
+		myobj.save("number.mp3") 
+		os.system("afplay number.mp3") 
+		myobj = gTTS(text=symbol, lang=language, slow=False)
+		myobj.save("symbol.mp3") 
+		os.system("afplay symbol.mp3") 
+		myobj = gTTS(text=weight, lang=language, slow=False)
+		myobj.save("weight.mp3") 
+		os.system("afplay weight.mp3") 
+		return "Name: "+self.name+"\nNumber: "+self.number+"\nSymbol: "+self.symbol+"\nWeight: "+self.weight+ "g/mol"
+
+		
 	def __str__(self):
 		return str(self.symbol)
 	__repr__ = __str__ 

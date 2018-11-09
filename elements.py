@@ -101,7 +101,7 @@ class PeriodicTable:
 			for element in self.element:
 				if element.getName() == value:
 					indexed = element
-		return "Element Name: " + indexed.getName() + "\nElement Symbol: " + indexed.getSymbol() + "\nAtomic Number: " + str(indexed.getNumber()) + "\nAtomic Weight: " + str(indexed.getWeight())
+		return "\u001b[4mElement Name:\u001b[0m " + indexed.getName() + "\n\u001b[4mElement Symbol:\u001b[0m " + indexed.getSymbol() + "\n\u001b[4mAtomic Number:\u001b[0m " + str(indexed.getNumber()) + "\n\u001b[4mAtomic Weight:\u001b[0m " + str(indexed.getWeight())+" g/mol"
 	def parse(self,compound):
 		compound = list(compound) # https://stackoverflow.com/questions/4978787/how-to-split-a-string-into-array-of-characters
 		totalweight = 0.0
@@ -124,7 +124,7 @@ class PeriodicTable:
 				for element in self.element:
 					if element.getSymbol() == symbol:
 						totalweight += float(element.getWeight())*multiplier
-		return totalweight
+		return "\u001b[4mTotal Molecular Weight\u001b[0m: "+ str(totalweight)+ " g/mol"
 	def __str__(self):
 		return str(self.element)
 	__repr__ = __str__ 

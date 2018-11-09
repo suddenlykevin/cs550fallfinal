@@ -1,5 +1,5 @@
 import csv
-from gtts import gTTS
+# from gtts import gTTS
 import os
 import time
 
@@ -25,23 +25,23 @@ class Element:
 					self.fusion = arg
 				n+=1
 	def identify(self):
-		name = "name: "+self.name
-		number = (" Atomic number: "+self.number)
-		symbol= ("symbol: "+self.symbol)
-		weight = ("\n weight: "+self.weight+"grams per mol")
-		language = 'en'
-		myobj = gTTS(text=name, lang=language, slow=False) 
-		myobj.save("name.mp3") 
-		os.system("afplay name.mp3")
-		myobj = gTTS(text=number, lang=language, slow=False)
-		myobj.save("number.mp3") 
-		os.system("afplay number.mp3") 
-		myobj = gTTS(text=symbol, lang=language, slow=False)
-		myobj.save("symbol.mp3") 
-		os.system("afplay symbol.mp3") 
-		myobj = gTTS(text=weight, lang=language, slow=False)
-		myobj.save("weight.mp3") 
-		os.system("afplay weight.mp3") 
+		# name = "name: "+self.name
+		# number = (" Atomic number: "+self.number)
+		# symbol= ("symbol: "+self.symbol)
+		# weight = ("\n weight: "+self.weight+"grams per mol")
+		# language = 'en'
+		# myobj = gTTS(text=name, lang=language, slow=False) 
+		# myobj.save("name.mp3") 
+		# os.system("afplay name.mp3")
+		# myobj = gTTS(text=number, lang=language, slow=False)
+		# myobj.save("number.mp3") 
+		# os.system("afplay number.mp3") 
+		# myobj = gTTS(text=symbol, lang=language, slow=False)
+		# myobj.save("symbol.mp3") 
+		# os.system("afplay symbol.mp3") 
+		# myobj = gTTS(text=weight, lang=language, slow=False)
+		# myobj.save("weight.mp3") 
+		# os.system("afplay weight.mp3") 
 		return "Name: "+self.name+"\nNumber: "+self.number+"\nSymbol: "+self.symbol+"\nWeight: "+self.weight+ "g/mol"
 
 		
@@ -65,7 +65,12 @@ class PeriodicTable:
 		try:
 			return self.element[int(value)-1].identify()
 		except:
-			pass
+			try:
+				for element in self.element:
+					if float(element.weight) == float(value):
+						return element.identify()
+			except:
+				pass
 		if len(value)<=2:
 			for element in self.element:
 				if element.symbol == value:
@@ -99,5 +104,19 @@ class PeriodicTable:
 		return str(self.element)
 	__repr__ = __str__ 
 
+def identify(response):
+	responselist = list(response)
+	elementcount=0
+	number=0
+	for n in range(len(responselist)):
+		if responselist[n].isupper()==True:
+			elementcount+=1
+		elif responselist[n].isalpha()==False:
+			number+=1
+	if (number>=1 and elementcount>=1) or (elementcount>1):
+		return initPeriodicTable.parse(response)
+	else:
+		return initPeriodicTable.index(response)
+
 initPeriodicTable=PeriodicTable()
-print(initPeriodicTable.index(input("Please input\n>>> ")))
+print(identify(input("Please input\n>>> ")))

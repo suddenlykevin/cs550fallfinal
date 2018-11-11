@@ -195,11 +195,5 @@ def identify(response): # differentiates between single element user input and c
 	else: # if user input is element (only one element and no digits or multiple digits but no element)
 		return initPeriodicTable.index(response)
 
-<<<<<<< HEAD
 initPeriodicTable=PeriodicTable() # generates periodic table
 start() # let the fun begin!
-=======
-while True:
-	initPeriodicTable=PeriodicTable()
-	print(identify(input("\nPlease input an \u001b[34;1matomic symbol, \u001b[32;1matomic weight, \u001b[33;1matomic name or \u001b[35;1matomic number\u001b[0m to recieve more information on that element. If you would like to reveive more information on a \u001b[31mmolecular compound\u001b[0m please input the formula\n\u001b[35m>>>\u001b[0m")))
->>>>>>> cfa4a621cdc39397ccd36b6b1dd76b3b760cd1a2

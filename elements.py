@@ -142,21 +142,21 @@ class PeriodicTable: # Class created to read CSV file, hold all elements, and ex
 				symbol.append(compound[n]) # sets element atomic symbol to character
 				try:
 					if compound[n+1].islower()==True: # if next character is lowercase alpha, then that is combined with first character to form new atomic symbol
-						symbol[n-1] = compound[n]+compound[n+1]
+						symbol[-1] = compound[n]+compound[n+1]
 						if compound[n+2].isalpha()==False: # if next character is a digit, new multiplier is set to that number
-							multiplier[n-1] = float(compound[n+2])
+							multiplier[-1] = float(compound[n+2])
 							if compound[n+3].isalpha()==False: # if next character is another digit, new multiplier is that number concatenated with previous digit to create new multiplier
-								multiplier[n-1] = float(str(compound[n+2])+str(compound[n+3]))
+								multiplier[-1] = float(str(compound[n+2])+str(compound[n+3]))
 					else:
 						if compound[n+1].isalpha()==False: # same as above modifications to multiplier, but if atomic symbol is only one character
-							multiplier[n-1] = float(compound[n+1])
+							multiplier[-1] = float(compound[n+1])
 							if compound[n+2].isalpha()==False:
-								multiplier[n-1] = float(str(compound[n+1])+str(compound[n+2]))
+								multiplier[-1] = float(str(compound[n+1])+str(compound[n+2]))
 				except IndexError: # if any of these values don't exist in the list, it is disregarded
 					pass
 				for element in self.element: # finds the corresponding element to atomic symbol
-					if element.getSymbol() == symbol[n-1]: 
-						totalweight += float(element.getWeight())*multiplier[n-1] # finds weight of corresponding element and adds (with multiplier) to total molecular weight
+					if element.getSymbol() == symbol[-1]: 
+						totalweight += float(element.getWeight())*multiplier[-1] # finds weight of corresponding element and adds (with multiplier) to total molecular weight
 		return [totalweight, symbol, multiplier] # returns weight
 # return as string instead of __repr__
 	def __str__(self):

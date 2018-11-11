@@ -173,4 +173,4 @@ def identify(response): # differentiates between single element user input and c
 
 while True:
 	initPeriodicTable=PeriodicTable()
-	print(identify(input("\nPlease input\n>>> ")))
+	print(identify(input("\nPlease input an \u001b[34;1matomic symbol, \u001b[32;1matomic weight, \u001b[33;1matomic name or \u001b[35;1matomic number\u001b[0m to recieve more information on that element. If you would like to reveive more information on a \u001b[31mmolecular compound\u001b[0m please input the formula\n\u001b[35m>>>\u001b[0m")))

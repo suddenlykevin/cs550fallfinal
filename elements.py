@@ -166,9 +166,9 @@ class PeriodicTable: # Class created to read CSV file, hold all elements, and ex
 def start(): # user input prompt loop
 	global error
 	if error == True: # if an error occured in previous query, inform user and return to no errors
-		print("\n\nAn error occured. Please try again with correct formatting.")
+		print("\n\n\u001b[31mAn error occured. Please try again with correct formatting.\u001b[0m")
 		error = False
-	print(identify(input("\n\nPlease input an \u001b[34;1matomic symbol, \u001b[32;1matomic weight, \u001b[33;1matomic name or \u001b[35;1matomic number\u001b[0m to recieve more information on that element. If you would like to reveive more information on a \u001b[31mmolecular compound\u001b[0m please input the formula\n\u001b[35m>>>\u001b[0m ")))
+	print(identify(input("\n\nPlease input an \u001b[34;1matomic symbol, \u001b[32;1matomic weight, \u001b[33;1matomic name or \u001b[35;1matomic number\u001b[0m to recieve more information on that element. If you would like to reveive more information on a \u001b[36mmolecular compound\u001b[0m please input the formula\n\u001b[35m>>>\u001b[0m ")))
 	start() # loop around for next query
 
 def identify(response): # differentiates between single element user input and compound and acts accordingly

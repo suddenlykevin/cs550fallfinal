@@ -44,7 +44,7 @@ class Element:
 	def setWeight(self,value):
 		self.weight = float(value)
 	def setBoil(self,value):
-		try: # Only sets boil if boiling point is in CSV file
+		try: # Only sets boil if boiling point is in CSV file (the subsequent values are never used, but can be used if class is needed in a different program)
 			self.boil = float(value)
 		except:
 			pass

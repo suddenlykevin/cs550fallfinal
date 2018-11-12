@@ -17,6 +17,7 @@ Finding out if object is a string/int: https://stackoverflow.com/questions/45411
 Length of an Array: https://stackoverflow.com/questions/1712227/how-to-get-the-number-of-elements-in-a-list-in-python
 Check if character is uppercase: https://stackoverflow.com/questions/45878324/how-to-check-if-string-has-lowercase-letter-uppercase-letter-and-number/
 Check if variable exists: https://stackoverflow.com/questions/843277/how-do-i-check-if-a-variable-exists
+Capitalize ONLY first letter and don't titlecase: https://stackoverflow.com/questions/46390374/changing-the-first-letter-of-a-string-into-upper-case-in-python
 
 On My Honor, I have neither given nor received unauthorized aid
 KEVIN XIE KNUTE BROADY
@@ -206,8 +207,8 @@ def start():
 def identify(response): 
 	global error
 	# turns response and adds first character capitalization (for flexibility) into list of characters to search through
+	response = response[0].upper() + response[1:]
 	responselist = list(response) 
-	responselist[0].upper()
 	# sets initial number of elements and digits in input
 	elementcount=0 
 	number=0 

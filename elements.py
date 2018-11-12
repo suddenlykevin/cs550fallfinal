@@ -215,9 +215,9 @@ def identify(response):
 		 # adds 1 to element count for each uppercase character
 		if responselist[n].isupper()==True:
 			elementcount+=1
-		# adds 1 to number count for each digit character (and returns error if there is a space)
+		# adds 1 to number count for each digit character (and returns error if there is a non-digit other than a period for floats)
 		elif responselist[n].isalpha()==False: 
-			if responselist[n]==" ":
+			if responselist[n].isdigit()==False and responselist[n]!=".":
 				error = True
 				start()
 			else:

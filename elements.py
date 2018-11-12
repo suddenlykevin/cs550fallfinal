@@ -5,6 +5,7 @@ Knute & Kevin CS550 Healey
 
 This project transcribes a CSV file into a periodic table program
 that can be accessed via user input through the command line.
+It uses classes, functions, for loops, and 2D lists as learned in class.
 CSV file name (if changed from default elements.csv) can be 
 changed at the top of the program as variable, "filename".
 
@@ -21,13 +22,17 @@ On My Honor, I have neither given nor received unauthorized aid
 KEVIN XIE KNUTE BROADY
 """
 
-import csv # for opening CSV files
+# for opening CSV files
+import csv 
 
-filename = "elements.csv" # sets default CSV filename
-error = False # checks if error occured during last query
+# sets default CSV filename and error checking (if last query was error, error = True)
+filename = "elements.csv"
+error = False
 
-class Element: # Class created to hold information on individual elements in periodic table
-	def __init__(self): # Creates new element with no information
+# Class created to hold information on individual elements in periodic table
+class Element: 
+# Creates new element with no properties (properties are set by setters)
+	def __init__(self): 
 		pass
 # SETTERS - sets values based on CSV file entries for elemental properties
 	def setName(self,value): 
@@ -80,17 +85,25 @@ class Element: # Class created to hold information on individual elements in per
 		return str(self.symbol)
 	__repr__ = __str__ 
 
-class PeriodicTable: # Class created to read CSV file, hold all elements, and execute functions based on user input
-	def __init__(self): # New periodic table based on CSV entries
-		self.element=[] # periodic table list
-		with open(filename) as csv_file: # opens CSV file as csv_file
-			csv_reader = list(csv.reader(csv_file, delimiter=",")) # reads csv file with commas as delimiters and then puts entries into 2D list
-			for x in range(len(csv_reader)): # goes through every row of 2D list
+# Class created to read CSV file, hold all elements, and execute functions based on user input
+class PeriodicTable: 
+	# New periodic table based on CSV entries
+	def __init__(self): 
+		# Initiates periodic table as a list
+		self.element=[] 
+		# opening CSV
+		with open(filename) as csv_file: 
+			# reads CSV file with commas as delimiters and then puts entries into 2D list
+			csv_reader = list(csv.reader(csv_file, delimiter=",")) 
+			# Goes through every row in the 2D list
+			for x in range(len(csv_reader)):
 				if x==0: # if x is 0, you are reading row 0, which is the column labels
 					pass
 				else:
-					self.element.append(Element()) # adds new element to periodic table list
-					for n in range(len(csv_reader[x])): # sets every possible value for new element using setters based on 2D list entries
+					# adds new property-less element to periodic table list
+					self.element.append(Element()) 
+					# sets every possible property for new element using setters based on 2D list entries
+					for n in range(len(csv_reader[x])):
 						if n==0:
 							self.element[x-1].setName(csv_reader[x][n])
 						elif n==1:
@@ -107,93 +120,122 @@ class PeriodicTable: # Class created to read CSV file, hold all elements, and ex
 							self.element[x-1].setDensity(csv_reader[x][n])
 						elif n==7:
 							self.element[x-1].setFusion(csv_reader[x][n])
-	def index(self,value): # searches and returns single elements based on user inputted values (can be number, weight, symbol, or name)
+	# Searches and returns properties of single elements based on user inputted values (can be number, weight, symbol, or name)
+	def index(self,value): 
 		global error
+		# if value is an integer that exists within atomic numbers, indexed element is element with matching atomic number (otherwise, error is caught)
 		try:
-			indexed = self.element[int(value)-1] # if value is an integer that exists within atomic numbers, indexed element is element with matching atomic number
-		except: # catches errors if value is not an int
+			indexed = self.element[int(value)-1] 
+		except: 
+			# else, if it is a float, then indexed element is element with matching atomic weight (otherwise, error is caught again)
 			try:
-				for element in self.element: # else, if it is a float, then indexed element is element with matching atomic weight
+				for element in self.element: 
 					if float(element.getWeight()) == float(value):
 						indexed = element
 			except:
-				pass # catches errors if value is not a float
-		if len(value)<=2: # if length 2 or less and value is a string, indexed element is element with matching atomic symbol
+				pass 
+		# Any input that is non-string, non-float, and below 2 characters long is idnetified and indexed as an atomic symbol
+		if len(value)<=2: 
 			for element in self.element:
 				if element.getSymbol() == value:
 					indexed = element
-		else: # otherwise, if string is longer than 2 characters, indexed element is element with matching name
+		# Otherwise, if string is longer than 2 characters, indexed element is element with matching name
+		else: 
 			for element in self.element:
 				if element.getName() == value:
 					indexed = element
-		if 'indexed' in locals(): # checks if indexed element has been set
+		# Checks if indexed element has been set, if not, it means that value is not an existing property and returns to start() as error
+		if 'indexed' in locals(): 
 			return "\n\u001b[4mElement Name:\u001b[0m " + indexed.getName() + "\n\u001b[4mElement Symbol:\u001b[0m " + indexed.getSymbol() + "\n\u001b[4mAtomic Number:\u001b[0m " + str(indexed.getNumber()) + "\n\u001b[4mAtomic Weight:\u001b[0m " + str(indexed.getWeight())+" g/mol" # returns formatted response
 		else:
 			error = True
-			start() # if indexed element is not set, then element does not exist with inputted values, return to start as an error
-	def parse(self,compound): # calculates total molecular weight of user inputted compound
-		compound = list(compound) # splits compound into list of characters
-		totalweight = 0.0 # sets beginning total weight
-		multiplier = [] # number of atoms in compound for each element
-		symbol = [] # atomic symbols for each element in compound
-		for n in range(len(compound)): # goes through each character in the compound
-			if compound[n].isupper()==True: # if character is upper-case alpha, it is an atomic symbol
-				multiplier.append(1.0) # sets initial multiplier to 1
-				symbol.append(compound[n]) # sets element atomic symbol to character
+			start() 
+	# Calculates total molecular weight of user inputted compound
+	def parse(self,compound): 
+		# Splits compound into list of characters
+		compound = list(compound) 
+		# sets initial values (total weight is 0) and keeps track of multipliers (number)
+		totalweight = 0.0
+		multiplier = [] 
+		symbol = [] 
+		# goes through each character in the compound and checks: if character is uppercase followed by lowercase or singular uppercase (set to symbol), then if following character(s) are digits (set to multiplier)
+		for n in range(len(compound)): 
+			# only "counts" if character is first letter of an atomic symbol
+			if compound[n].isupper()==True: 
+				# sets initial multiplier for each element to 1 and initial atomic symbol to character
+				multiplier.append(1.0) 
+				symbol.append(compound[n]) 
 				try:
-					if compound[n+1].islower()==True: # if next character is lowercase alpha, then that is combined with first character to form new atomic symbol
+					# if next character is lowercase alpha, then that is combined with first character to form new atomic symbol, then check if following symbols are digits (for multiplier)
+					if compound[n+1].islower()==True: 
 						symbol[-1] = compound[n]+compound[n+1]
-						if compound[n+2].isalpha()==False: # if next character is a digit, new multiplier is set to that number
+						if compound[n+2].isalpha()==False: 
 							multiplier[-1] = float(compound[n+2])
-							if compound[n+3].isalpha()==False: # if next character is another digit, new multiplier is that number concatenated with previous digit to create new multiplier
+							if compound[n+3].isalpha()==False: 
 								multiplier[-1] = float(str(compound[n+2])+str(compound[n+3]))
 					else:
-						if compound[n+1].isalpha()==False: # same as above modifications to multiplier, but if atomic symbol is only one character
+						# same as above modifications to multiplier, but if atomic symbol is only one character
+						if compound[n+1].isalpha()==False: 
 							multiplier[-1] = float(compound[n+1])
 							if compound[n+2].isalpha()==False:
 								multiplier[-1] = float(str(compound[n+1])+str(compound[n+2]))
-				except IndexError: # if any of these values don't exist in the list, it is disregarded
+				 # catches errors if it is the last few characters and n+1/n+2 is out of range
+				except IndexError:
 					pass
-				for element in self.element: # finds the corresponding element to atomic symbol
+				 # finds the corresponding element to atomic symbol and adds element's atomic weight (using Getter) scaled by multiplier to total weight
+				for element in self.element:
 					if element.getSymbol() == symbol[-1]: 
-						totalweight += float(element.getWeight())*multiplier[-1] # finds weight of corresponding element and adds (with multiplier) to total molecular weight
-		return [totalweight, symbol, multiplier] # returns weight
+						totalweight += float(element.getWeight())*multiplier[-1] 
+		return [totalweight, symbol, multiplier] # returns all values - total weight, list of elements involved, and corresponding multipliers
 # return as string instead of __repr__
 	def __str__(self):
 		return str(self.element)
 	__repr__ = __str__ 
 
-def start(): # user input prompt loop
+# user input prompt loop
+def start(): 
 	global error
-	if error == True: # if an error occured in previous query, inform user and return to no errors
+	# if an error occured in previous query, inform user and return to no errors
+	if error == True: 
 		print("\n\n\u001b[31mAn error occured. Please try again with correct formatting.\u001b[0m")
 		error = False
 	print(identify(input("\n\nPlease input an \u001b[34;1matomic symbol, \u001b[32;1matomic weight, \u001b[33;1matomic name or \u001b[35;1matomic number\u001b[0m to recieve more information on that element. If you would like to reveive more information on a \u001b[36mmolecular compound\u001b[0m please input the formula\n\u001b[35m>>>\u001b[0m ")))
 	start() # loop around for next query
 
-def identify(response): # differentiates between single element user input and compound and acts accordingly
+# differentiates between single element user input and compound and send to either index or parse
+def identify(response): 
 	global error
-	responselist = list(response) # turns response into list of characters
-	elementcount=0 # number of elements in response
-	number=0 # number of numbers in response
-	for n in range(len(responselist)): # goes through each character
-		if responselist[n].isupper()==True: # adds 1 to element count for each uppercase character
+	# turns response into list of characters to search through
+	responselist = list(response) 
+	# sets initial number of elements and digits in input
+	elementcount=0 
+	number=0 
+	# search through list
+	for n in range(len(responselist)): 
+		 # adds 1 to element count for each uppercase character
+		if responselist[n].isupper()==True:
 			elementcount+=1
-		elif responselist[n].isalpha()==False: # adds 1 to number count for each digit character (and returns error if there is a space)
-			if responselist[n]==" ": # if character is space, then return to start() as an error
+		# adds 1 to number count for each digit character (and returns error if there is a space)
+		elif responselist[n].isalpha()==False: 
+			if responselist[n]==" ":
 				error = True
 				start()
 			else:
 				number+=1
-	if (number>=1 and elementcount>=1) or (elementcount>1): # if user input is compound (more than one element or digit exists)
-		variables = initPeriodicTable.parse(response) # parse returns list of values [total weight, element symbols, element multipliers]
-		# returns all values from parse in a readable manner
+	# if user input is compound (more than one element or element with digit exists), input is sent to parse
+	if (number>=1 and elementcount>=1) or (elementcount>1): 
+		# parse returns list of values [total weight, element symbols, element multipliers]
+		variables = initPeriodicTable.parse(response) 
+		# returns all values from parse in a readable manner (which varies in length due to compound complexity using for loop)
 		response = "\n\u001b[4mTotal Molecular Weight\u001b[0m: "+ str(variables[0]) + "g/mol. \n\nElements Present:\n\n"
 		for i in range(len(variables[1])):
 			response+= str(int(variables[2][i-1])) + "x \n" + initPeriodicTable.index(variables[1][i-1]) + "\n\n"
 		return  response
-	else: # if user input is element (only one element and no digits or multiple digits but no element)
+	# if user input is element (only one element and no digits or multiple digits but no element), input is sent to index and result returned
+	else: 
 		return initPeriodicTable.index(response)
 
-initPeriodicTable=PeriodicTable() # generates periodic table
-start() # let the fun begin!
+# generates initial periodic table
+initPeriodicTable=PeriodicTable() 
+# let the fun begin!
+start() 

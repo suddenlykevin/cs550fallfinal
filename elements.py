@@ -205,9 +205,9 @@ def start():
 # differentiates between single element user input and compound and send to either index or parse
 def identify(response): 
 	global error
-	# turns titlecased response (for flexibility) into list of characters to search through
-	response = response.title()
+	# turns response and adds first character capitalization (for flexibility) into list of characters to search through
 	responselist = list(response) 
+	responselist[0].upper()
 	# sets initial number of elements and digits in input
 	elementcount=0 
 	number=0 
